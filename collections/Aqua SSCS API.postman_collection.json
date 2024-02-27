@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2a15f4b9-5af2-45d2-9358-6779182354e1",
+		"_postman_id": "4dcce87b-cbbe-4a9a-86c2-a313229fbf14",
 		"name": "Aqua SSCS API",
 		"description": "Fastify Service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -39,7 +39,10 @@
 															}
 														],
 														"url": {
-															"raw": "/scans/results/summary",
+															"raw": "{{sscs_endpoint}}/scans/results/summary",
+															"host": [
+																"{{sscs_endpoint}}"
+															],
 															"path": [
 																"scans",
 																"results",
@@ -118,7 +121,7 @@
 																	}
 																],
 																"url": {
-																	"raw": "/scans/results/summary?avdIds=<string>,<string>&scanIds=<string>,<string>&repositoryIds=<string>,<string>&scanCategory=iacMisconfigurations&search=<string>&file=<string>&resource=<string>&vendorFix=<boolean>&repositoryName=<string>&packageName=<string>&from=<dateTime>&to=<dateTime>&reachable=<boolean>&direct=<boolean>&cwe=<string>&category=<string>&severity=0&organization=<string>&system=<string>",
+																	"raw": "{{sscs_endpoint}}/scans/results/summary?avdIds=<string>,<string>&scanIds=<string>,<string>&repositoryIds=<string>,<string>&scanCategory=iacMisconfigurations&search=<string>&file=<string>&resource=<string>&vendorFix=<boolean>&repositoryName=<string>&packageName=<string>&from=<dateTime>&to=<dateTime>&reachable=<boolean>&direct=<boolean>&cwe=<string>&category=<string>&severity=0&organization=<string>&system=<string>",
 																	"path": [
 																		"scans",
 																		"results",
@@ -238,7 +241,7 @@
 																	}
 																],
 																"url": {
-																	"raw": "/scans/results/summary?avdIds=<string>,<string>&scanIds=<string>,<string>&repositoryIds=<string>,<string>&scanCategory=iacMisconfigurations&search=<string>&file=<string>&resource=<string>&vendorFix=<boolean>&repositoryName=<string>&packageName=<string>&from=<dateTime>&to=<dateTime>&reachable=<boolean>&direct=<boolean>&cwe=<string>&category=<string>&severity=0&organization=<string>&system=<string>",
+																	"raw": "{{sscs_endpoint}}/scans/results/summary?avdIds=<string>,<string>&scanIds=<string>,<string>&repositoryIds=<string>,<string>&scanCategory=iacMisconfigurations&search=<string>&file=<string>&resource=<string>&vendorFix=<boolean>&repositoryName=<string>&packageName=<string>&from=<dateTime>&to=<dateTime>&reachable=<boolean>&direct=<boolean>&cwe=<string>&category=<string>&severity=0&organization=<string>&system=<string>",
 																	"path": [
 																		"scans",
 																		"results",
@@ -358,7 +361,7 @@
 																	}
 																],
 																"url": {
-																	"raw": "/scans/results/summary?avdIds=<string>,<string>&scanIds=<string>,<string>&repositoryIds=<string>,<string>&scanCategory=iacMisconfigurations&search=<string>&file=<string>&resource=<string>&vendorFix=<boolean>&repositoryName=<string>&packageName=<string>&from=<dateTime>&to=<dateTime>&reachable=<boolean>&direct=<boolean>&cwe=<string>&category=<string>&severity=0&organization=<string>&system=<string>",
+																	"raw": "{{sscs_endpoint}}/scans/results/summary?avdIds=<string>,<string>&scanIds=<string>,<string>&repositoryIds=<string>,<string>&scanCategory=iacMisconfigurations&search=<string>&file=<string>&resource=<string>&vendorFix=<boolean>&repositoryName=<string>&packageName=<string>&from=<dateTime>&to=<dateTime>&reachable=<boolean>&direct=<boolean>&cwe=<string>&category=<string>&severity=0&organization=<string>&system=<string>",
 																	"path": [
 																		"scans",
 																		"results",
@@ -485,7 +488,10 @@
 															}
 														],
 														"url": {
-															"raw": "/scans/results/checks",
+															"raw": "{{sscs_endpoint}}/scans/results/checks",
+															"host": [
+																"{{sscs_endpoint}}"
+															],
 															"path": [
 																"scans",
 																"results",
@@ -512,7 +518,7 @@
 																	}
 																],
 																"url": {
-																	"raw": "/scans/results/checks?avdIds=<string>,<string>&scanIds=<string>,<string>&repositoryIds=<string>,<string>&scanCategory=iacMisconfigurations&search=<string>&file=<string>&resource=<string>&vendorFix=<boolean>&repositoryName=<string>&packageName=<string>&from=<dateTime>&to=<dateTime>&reachable=<boolean>&direct=<boolean>&cwe=<string>&category=<string>&severity=3&organization=<string>&system=<string>&size=10&page=1&sortKey=resource&sortOrder=asc",
+																	"raw": "{{sscs_endpoint}}/scans/results/checks?avdIds=<string>,<string>&scanIds=<string>,<string>&repositoryIds=<string>,<string>&scanCategory=iacMisconfigurations&search=<string>&file=<string>&resource=<string>&vendorFix=<boolean>&repositoryName=<string>&packageName=<string>&from=<dateTime>&to=<dateTime>&reachable=<boolean>&direct=<boolean>&cwe=<string>&category=<string>&severity=3&organization=<string>&system=<string>&size=10&page=1&sortKey=resource&sortOrder=asc",
 																	"path": [
 																		"scans",
 																		"results",
@@ -4224,6 +4230,105 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "SSCS Generate Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var crypto = require('crypto-js');",
+							"var moment = require('moment');",
+							"",
+							"var secret = pm.environment.get(\"api_secret\");",
+							"",
+							"var timestamp = (moment.unix(new Date()))/1000;",
+							"let path = pm.request.url.getPath();",
+							"let method = pm.request.method.toUpperCase();",
+							"",
+							"let body = JSON.parse(pm.request.body.raw);",
+							"",
+							"var string = timestamp + method +  path + (body && Object.keys(body).length > 0 ? JSON.stringify(body) : '');",
+							"",
+							"//console.log(string)",
+							"",
+							"var hmac = crypto.HmacSHA256(string, secret);",
+							"var signature = hmac.toString();",
+							"",
+							"pm.globals.set(\"signature\", signature);",
+							"pm.globals.set(\"timestamp\", timestamp);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"function parseJwt(token) {",
+							"  var base64Payload = token.split('.')[1];",
+							"  var payload = Buffer.from(base64Payload, 'base64');",
+							"  return JSON.parse(payload.toString());",
+							"}",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"//console.log(jsonData)",
+							"postman.setEnvironmentVariable(\"token\", jsonData.data);",
+							"",
+							"var token = pm.environment.get(\"token\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Signature",
+						"value": "{{signature}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Timestamp",
+						"value": "{{timestamp}}",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"validity\":240,\n    \"allowed_endpoints\":[\"ANY\"]\n}"
+				},
+				"url": {
+					"raw": "{{api_endpoint}}/v2/tokens",
+					"host": [
+						"{{api_endpoint}}"
+					],
+					"path": [
+						"v2",
+						"tokens"
+					]
+				},
+				"description": "This request will generate a bearer token with a specified time to live value that can be enhanced in the body at your convinience. It will set global variables for signature, timestamp and environment variables for token and aqua_saas_endpoint."
+			},
+			"response": []
 		}
 	],
 	"event": [
