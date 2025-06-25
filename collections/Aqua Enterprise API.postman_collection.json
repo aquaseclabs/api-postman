@@ -20366,137 +20366,137 @@
 							"body": "{\n  \"message\": \"est ex deserunt aliqua\",\n  \"code\": 72515222,\n  \"aqua_code\": 56184994\n}"
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "Test connection to a registry",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"id\",\n  \"type\": \"eiusmod eu aliquip fugiat\",\n  \"always_pull_patterns\": [\n    \"ex nostrud culpa\",\n    \"quis ex adipisicing\"\n  ],\n  \"auto_pull\": false,\n  \"auto_pull_max\": -29061598.457278848,\n  \"auto_pull_rescan\": true,\n  \"auto_pull_time\": \"exercitation\",\n  \"description\": \"amet mollit eiusmod\",\n  \"options\": [\n    \"est incididunt consectetur dolore nostrud\",\n    \"Ut Lorem voluptate pariatur enim\"\n  ],\n  \"password\": \"officia culpa dolor \",\n  \"prefixes\": [\n    \"dolor in\",\n    \"ex\"\n  ],\n  \"pull_image_age\": \"tempor id in\",\n  \"pull_image_tag_pattern\": [\n    \"ipsum veniam\",\n    \"aliquip in\"\n  ],\n  \"pull_repo_patterns_excluded\": [\n    \"dolor officia do ad\",\n    \"adipisicing magna et pariatur aliqua\"\n  ],\n  \"url\": \"elit laboris non dolore sit\",\n  \"username\": \"est\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
 				},
-				"url": {
-					"raw": "{{aqua_url_v1}}/registries/validate",
-					"host": [
-						"{{aqua_url_v1}}"
-					],
-					"path": [
-						"registries",
-						"validate"
+				{
+					"name": "Test connection to a registry",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"id\",\n  \"type\": \"eiusmod eu aliquip fugiat\",\n  \"always_pull_patterns\": [\n    \"ex nostrud culpa\",\n    \"quis ex adipisicing\"\n  ],\n  \"auto_pull\": false,\n  \"auto_pull_max\": -29061598.457278848,\n  \"auto_pull_rescan\": true,\n  \"auto_pull_time\": \"exercitation\",\n  \"description\": \"amet mollit eiusmod\",\n  \"options\": [\n    \"est incididunt consectetur dolore nostrud\",\n    \"Ut Lorem voluptate pariatur enim\"\n  ],\n  \"password\": \"officia culpa dolor \",\n  \"prefixes\": [\n    \"dolor in\",\n    \"ex\"\n  ],\n  \"pull_image_age\": \"tempor id in\",\n  \"pull_image_tag_pattern\": [\n    \"ipsum veniam\",\n    \"aliquip in\"\n  ],\n  \"pull_repo_patterns_excluded\": [\n    \"dolor officia do ad\",\n    \"adipisicing magna et pariatur aliqua\"\n  ],\n  \"url\": \"elit laboris non dolore sit\",\n  \"username\": \"est\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{aqua_url_v1}}/registries/validate",
+							"host": [
+								"{{aqua_url_v1}}"
+							],
+							"path": [
+								"registries",
+								"validate"
+							]
+						},
+						"description": "Test registry connection"
+					},
+					"response": [
+						{
+							"name": "Test completed successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "cillum exercitation",
+										"description": "(Required) Authorization header must include Bearer token or Basic authentication"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"in magna labore ex\",\n  \"type\": \"labore amet exercitation\",\n  \"always_pull_patterns\": [\n    \"nul\",\n    \"ut in sint\"\n  ],\n  \"auto_pull\": false,\n  \"auto_pull_max\": -55016288.7319741,\n  \"auto_pull_rescan\": true,\n  \"auto_pull_time\": \"veniam\",\n  \"description\": \"est ipsum\",\n  \"options\": [\n    \"ipsum qui minim\",\n    \"laboris nisi amet\"\n  ],\n  \"password\": \"fugiat in aliquip\",\n  \"prefixes\": [\n    \"Duis\",\n    \"aliquip dolor elit\"\n  ],\n  \"pull_image_age\": \"cillum aliquip dolore exercitation ut\",\n  \"pull_image_tag_pattern\": [\n    \"mollit consectetur\",\n    \"commodo velit\"\n  ],\n  \"pull_repo_patterns_excluded\": [\n    \"commodo aliqua Excepteur\",\n    \"magna ut id est ut\"\n  ],\n  \"url\": \"est ea eiusmod\",\n  \"username\": \"ad adipisicing ullamco\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{aqua_url_v1}}/registries/validate",
+									"host": [
+										"{{aqua_url_v1}}"
+									],
+									"path": [
+										"registries",
+										"validate"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Invalid or missing input",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "cillum exercitation",
+										"description": "(Required) Authorization header must include Bearer token or Basic authentication"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"in magna labore ex\",\n  \"type\": \"labore amet exercitation\",\n  \"always_pull_patterns\": [\n    \"nul\",\n    \"ut in sint\"\n  ],\n  \"auto_pull\": false,\n  \"auto_pull_max\": -55016288.7319741,\n  \"auto_pull_rescan\": true,\n  \"auto_pull_time\": \"veniam\",\n  \"description\": \"est ipsum\",\n  \"options\": [\n    \"ipsum qui minim\",\n    \"laboris nisi amet\"\n  ],\n  \"password\": \"fugiat in aliquip\",\n  \"prefixes\": [\n    \"Duis\",\n    \"aliquip dolor elit\"\n  ],\n  \"pull_image_age\": \"cillum aliquip dolore exercitation ut\",\n  \"pull_image_tag_pattern\": [\n    \"mollit consectetur\",\n    \"commodo velit\"\n  ],\n  \"pull_repo_patterns_excluded\": [\n    \"commodo aliqua Excepteur\",\n    \"magna ut id est ut\"\n  ],\n  \"url\": \"est ea eiusmod\",\n  \"username\": \"ad adipisicing ullamco\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{aqua_url_v1}}/registries/validate",
+									"host": [
+										"{{aqua_url_v1}}"
+									],
+									"path": [
+										"registries",
+										"validate"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"message\": \"est ex deserunt aliqua\",\n  \"code\": 72515222,\n  \"aqua_code\": 56184994\n}"
+						}
 					]
-				},
-				"description": "Test registry connection"
-			},
-			"response": [
-				{
-					"name": "Test completed successfully",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "cillum exercitation",
-								"description": "(Required) Authorization header must include Bearer token or Basic authentication"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"in magna labore ex\",\n  \"type\": \"labore amet exercitation\",\n  \"always_pull_patterns\": [\n    \"nul\",\n    \"ut in sint\"\n  ],\n  \"auto_pull\": false,\n  \"auto_pull_max\": -55016288.7319741,\n  \"auto_pull_rescan\": true,\n  \"auto_pull_time\": \"veniam\",\n  \"description\": \"est ipsum\",\n  \"options\": [\n    \"ipsum qui minim\",\n    \"laboris nisi amet\"\n  ],\n  \"password\": \"fugiat in aliquip\",\n  \"prefixes\": [\n    \"Duis\",\n    \"aliquip dolor elit\"\n  ],\n  \"pull_image_age\": \"cillum aliquip dolore exercitation ut\",\n  \"pull_image_tag_pattern\": [\n    \"mollit consectetur\",\n    \"commodo velit\"\n  ],\n  \"pull_repo_patterns_excluded\": [\n    \"commodo aliqua Excepteur\",\n    \"magna ut id est ut\"\n  ],\n  \"url\": \"est ea eiusmod\",\n  \"username\": \"ad adipisicing ullamco\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{aqua_url_v1}}/registries/validate",
-							"host": [
-								"{{aqua_url_v1}}"
-							],
-							"path": [
-								"registries",
-								"validate"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "text",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "text/plain"
-						}
-					],
-					"cookie": [],
-					"body": ""
-				},
-				{
-					"name": "Invalid or missing input",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "cillum exercitation",
-								"description": "(Required) Authorization header must include Bearer token or Basic authentication"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"in magna labore ex\",\n  \"type\": \"labore amet exercitation\",\n  \"always_pull_patterns\": [\n    \"nul\",\n    \"ut in sint\"\n  ],\n  \"auto_pull\": false,\n  \"auto_pull_max\": -55016288.7319741,\n  \"auto_pull_rescan\": true,\n  \"auto_pull_time\": \"veniam\",\n  \"description\": \"est ipsum\",\n  \"options\": [\n    \"ipsum qui minim\",\n    \"laboris nisi amet\"\n  ],\n  \"password\": \"fugiat in aliquip\",\n  \"prefixes\": [\n    \"Duis\",\n    \"aliquip dolor elit\"\n  ],\n  \"pull_image_age\": \"cillum aliquip dolore exercitation ut\",\n  \"pull_image_tag_pattern\": [\n    \"mollit consectetur\",\n    \"commodo velit\"\n  ],\n  \"pull_repo_patterns_excluded\": [\n    \"commodo aliqua Excepteur\",\n    \"magna ut id est ut\"\n  ],\n  \"url\": \"est ea eiusmod\",\n  \"username\": \"ad adipisicing ullamco\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{aqua_url_v1}}/registries/validate",
-							"host": [
-								"{{aqua_url_v1}}"
-							],
-							"path": [
-								"registries",
-								"validate"
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"body": "{\n  \"message\": \"est ex deserunt aliqua\",\n  \"code\": 72515222,\n  \"aqua_code\": 56184994\n}"
 				}
 			]
 		}
