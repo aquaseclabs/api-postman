@@ -1,11 +1,11 @@
 {
 	"info": {
 		"_postman_id": "bbefcb1b-1575-49fc-b45a-1d79995d76f6",
-		"name": "Aqua Enterprise API",
-		"description": "REST API of Aqua Enterprise, v2. Note that this API is currently incomplete, meaning some functionality is still only provided by the v1 API. For example, authentication should be performed via the v1 API.",
+		"name": "🔐 Aqua Enterprise API",
+		"description": "Welcome to the **Aqua API Postman Collection** – your one-stop environment to explore, test, and integrate with [Aqua’s Cloud Security APIs](https://www.aquasec.com/). This collection is designed to help developers, DevOps engineers, and security professionals quickly authenticate, query, and interact with Aqua’s key API endpoints in a structured, pre-configured workspace.\n\n### **🚀 What’s Included**\n\n- **Authentication flow** with token handling (JWT parsing and storage)\n    \n- Ready-to-use examples for key APIs\n    \n- Dynamic environment variables (aqua_url_v1, aqua_url_v2) auto-populated post-login\n    \n- Modular request groups for easy navigation and testing\n    \n\n### **⚙️ How to Use**\n\n1. **Import the Collection** into Postman (use the “Run in Postman” button if available).\n    \n2. Set your environment variables:\n    \n    - signin_url\n        \n    - email\n        \n    - password\n        \n3. Run the Login request to automatically parse the JWT and configure base URLs.\n    \n4. Start exploring Aqua’s APIs using the organized request groups.\n    \n\n### **💡 Notes**\n\n- Make sure your user credentials have appropriate permissions in Aqua.\n    \n- The JWT parsing logic is handled via a pre-script to extract ese_url from csp_metadata and dynamically configure endpoints.\n    \n- This collection is ideal for both learning and automating integrations with Aqua’s backend services.\n    \n\n### **💡 Signin URLs**\n\nFor SaaS users, set the \"signin_url\" variable according to your region.\n\n| **Region** | **URL** |\n| --- | --- |\n| US | https://api.cloudsploit.com |\n| EU | https://eu-1.api.cloudsploit.com |\n| Singapore | https://asia-1.api.cloudsploit.com |\n| Sydney | https://ap-2.api.cloudsploit.com |",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15550005",
-		"_collection_link": "https://interstellar-escape-237386.postman.co/workspace/Aqua~17f1b6a9-d551-4164-8346-6a3a6c192ee8/collection/15550005-bbefcb1b-1575-49fc-b45a-1d79995d76f6?action=share&source=collection_link&creator=15550005"
+		"_collection_link": "https://interstellar-escape-237386.postman.co/workspace/aquasec~3774c55e-fd52-4d20-9ba1-535233604f08/collection/15550005-bbefcb1b-1575-49fc-b45a-1d79995d76f6?action=share&source=collection_link&creator=15550005"
 	},
 	"item": [
 		{
@@ -109,9 +109,9 @@
 									"raw": "{\n    \"validity\":240,\n    \"allowed_endpoints\":[\"ANY\"],\n    \"csp_roles\":[\"Admin\"]\n}"
 								},
 								"url": {
-									"raw": "{{authenticate_url}}/v2/tokens",
+									"raw": "{{signin_url}}/v2/tokens",
 									"host": [
-										"{{authenticate_url}}"
+										"{{signin_url}}"
 									],
 									"path": [
 										"v2",
@@ -175,9 +175,9 @@
 									"raw": "{\n    \"email\":\"{{email}}\",\n    \"password\":\"{{password}}\"\n}"
 								},
 								"url": {
-									"raw": "{{aqua_url_v2}}/v2/signin",
+									"raw": "{{signin_url}}/v2/signin",
 									"host": [
-										"{{aqua_url_v2}}"
+										"{{signin_url}}"
 									],
 									"path": [
 										"v2",
@@ -203,7 +203,8 @@
 										"exec": [
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								},
 								{
@@ -218,10 +219,15 @@
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"//console.log(jsonData)",
-											"postman.setEnvironmentVariable(\"token\", jsonData.token);",
+											"pm.environment.set(\"token\", jsonData.token);",
+											"",
+											"pm.environment.set(\"aqua_url_v1\", signin_url + \"/api/v1\");",
+											"pm.environment.set(\"aqua_url_v2\", signin_url + \"/api/v2\");",
+											"",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -244,9 +250,9 @@
 									"raw": "{\n    \"id\":\"{{username}}\",\n    \"password\":\"{{password}}\"\n}"
 								},
 								"url": {
-									"raw": "{{aqua_url_v2}}/v1/login",
+									"raw": "{{signin_url}}/v1/login",
 									"host": [
-										"{{aqua_url_v2}}"
+										"{{signin_url}}"
 									],
 									"path": [
 										"v1",
@@ -17408,7 +17414,7 @@
 										},
 										{
 											"key": "id",
-											"value": null,
+											"value": "",
 											"disabled": true
 										},
 										{
@@ -20181,7 +20187,7 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "Bearer eyJhbGciOiJSU ...",
+												"value": "{{vault:bearer-token}} ...",
 												"description": "(Required) Authorization header must include Bearer token or Basic authentication"
 											}
 										],
@@ -20225,7 +20231,7 @@
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "Bearer eyJhbGciOiJSU ...",
+												"value": "{{vault:bearer-token}} ...",
 												"description": "(Required) Authorization header must include Bearer token or Basic authentication"
 											}
 										],
