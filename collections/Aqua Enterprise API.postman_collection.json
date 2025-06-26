@@ -147,7 +147,7 @@
 											"",
 											"var jsonData = JSON.parse(responseBody);",
 											"//console.log(jsonData)",
-											"pm.environment.set(\"token\", jsonData.data);",
+											"pm.environment.set(\"token\", jsonData.data.token);",
 											"",
 											"var token = pm.environment.get(\"token\");",
 											"var aqua_url_v2 = (parseJwt(token))[\"csp_metadata\"][\"urls\"][\"ese_url\"]",
