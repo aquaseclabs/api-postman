@@ -118,7 +118,7 @@
 										"tokens"
 									]
 								},
-								"description": "This request will generate a bearer token with a specified time to live value that can be enhanced in the body at your convinience. It will set global variables for signature, timestamp and environment variables for token and aqua_saas_endpoint."
+								"description": "# 🔐 API Key Authentication\n\n**Generate a Bearer Token** using your Aqua API Key and Secret with HMAC-SHA256 signature verification.\n\n## 📋 How It Works\n\n1. **Pre-request Script**: Automatically generates HMAC-SHA256 signature using:\n   - Current timestamp\n   - HTTP method (POST)\n   - Request path (/v2/tokens)\n   - Request body (JSON payload)\n   - Your API secret\n\n2. **Headers**: Automatically sets required authentication headers:\n   - `X-API-Key`: Your API key\n   - `X-Signature`: Generated HMAC signature\n   - `X-Timestamp`: Current timestamp\n\n3. **Token Generation**: Creates a JWT token with:\n   - **Validity**: 240 minutes (configurable in request body)\n   - **Endpoints**: Access to ANY endpoint (configurable)\n   - **Roles**: Admin permissions (configurable)\n\n## ⚙️ Configuration Options\n\nModify the request body to customize token properties:\n\n```json\n{\n    \"validity\": 240,           // Token lifetime in minutes\n    \"allowed_endpoints\": [\"ANY\"], // Specific endpoints or \"ANY\"\n    \"csp_roles\": [\"Admin\"]     // User roles for the token\n}\n```\n\n## 🔄 Post-Authentication\n\nAfter successful authentication, this request automatically:\n- Parses the JWT token response\n- Extracts the ESE URL from token metadata\n- Sets environment variables:\n  - `token`: The bearer token for API calls\n  - `aqua_url_v1`: Full API v1 base URL\n  - `aqua_url_v2`: Full API v2 base URL\n\n## 📝 Required Environment Variables\n\n- `signin_url`: Your regional Aqua API endpoint\n- `api_key`: Your Aqua API key\n- `api_secret`: Your Aqua API secret"
 							},
 							"response": []
 						},
@@ -184,12 +184,12 @@
 										"signin"
 									]
 								},
-								"description": "This request will generate a bearer token with a specified time to live value that can be enhanced in the body at your convinience. It will set global variables for signature, timestamp and environment variables for token and aqua_saas_endpoint."
+								"description": "# 🔑 Username & Password Authentication (SaaS)\n\n**Generate a Bearer Token** using your Aqua SaaS account credentials (email and password).\n\n## 📋 How It Works\n\n1. **Credentials**: Uses your standard Aqua SaaS login credentials\n   - Email address (as username)\n   - Account password\n\n2. **Authentication**: Sends credentials to the SaaS signin endpoint\n   - Endpoint: `{signin_url}/v2/signin`\n   - Method: POST with JSON body\n   - No additional signatures required\n\n3. **Token Response**: Receives a JWT token with:\n   - User permissions and roles\n   - Session-based validity\n   - Metadata for API endpoint configuration\n\n## 🔄 Post-Authentication\n\nAfter successful authentication, this request automatically:\n- Parses the JWT token from response\n- Extracts the ESE URL from token metadata  \n- Sets environment variables:\n  - `token`: The bearer token for API calls\n  - `aqua_url_v1`: Full API v1 base URL\n  - `aqua_url_v2`: Full API v2 base URL\n\n## 📝 Required Environment Variables\n\n- `signin_url`: Your regional Aqua SaaS endpoint\n- `email`: Your Aqua SaaS account email\n- `password`: Your Aqua SaaS account password\n\n## 💡 Best Practices\n\n- **Development**: Ideal for testing and development workflows\n- **Security**: Consider using API Key authentication for production\n- **Session Management**: Token validity follows your account session settings"
 							},
 							"response": []
 						}
 					],
-					"description": "You can authenticate against Aqua SaaS using two methods:\n\n- User name (email) and Password\n    \n- API Key and Secret\n    \n\nIf using the API Key and Secret, please make sure the API Key is not Global Admin. You will need to disable the \"Global Admin\" toggle, and then choose two specific permissions from the list: role:assign and tokens:readwrite"
+					"description": "# 🔐 SaaS Authentication\n\n**Aqua SaaS** offers two secure authentication methods to access the Enterprise API:\n\n## 📋 Authentication Methods\n\n### 1. **API Key & Secret Authentication** (Recommended)\n- **Use Case**: Ideal for programmatic access, automation, and production environments\n- **Security**: Higher security with HMAC-SHA256 signature verification\n- **Token Validity**: Configurable (default: 240 minutes)\n- **Permissions**: Granular control over API access\n\n### 2. **Username & Password Authentication**\n- **Use Case**: Quick testing and development environments\n- **Security**: Standard JWT-based authentication\n- **Token Validity**: Session-based\n- **Permissions**: Inherits user account permissions\n\n## ⚙️ API Key Setup Requirements\n\n**Important**: When using API Key authentication, ensure proper configuration:\n\n1. **Disable Global Admin**: Turn off the \"Global Admin\" toggle for the API key\n2. **Required Permissions**: Grant these specific permissions:\n   - `role:assign` - For role management operations\n   - `tokens:readwrite` - For token creation and management\n\n## 🌍 Regional Endpoints\n\nChoose the appropriate signin URL based on your region:\n\n| Region | Signin URL |\n|--------|------------|\n| **US** | `https://api.cloudsploit.com` |\n| **EU** | `https://eu-1.api.cloudsploit.com` |\n| **Singapore** | `https://asia-1.api.cloudsploit.com` |\n| **Sydney** | `https://ap-2.api.cloudsploit.com` |\n\n## 🔄 Token Management\n\nBoth methods automatically:\n- Parse JWT tokens and extract metadata\n- Set environment variables (`aqua_url_v1`, `aqua_url_v2`)\n- Configure dynamic base URLs for subsequent API calls"
 				},
 				{
 					"name": "SelfHosted",
@@ -220,7 +220,7 @@
 											"var jsonData = JSON.parse(responseBody);",
 											"//console.log(jsonData)",
 											"pm.environment.set(\"token\", jsonData.token);",
-											"",
+											"signin_url = pm.environment.get(\"signin_url\");",
 											"pm.environment.set(\"aqua_url_v1\", signin_url + \"/api/v1\");",
 											"pm.environment.set(\"aqua_url_v2\", signin_url + \"/api/v2\");",
 											"",
@@ -238,11 +238,6 @@
 										"key": "Content-Type",
 										"value": "application/json;charset=UTF-8",
 										"type": "text"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer {{token}}",
-										"type": "text"
 									}
 								],
 								"body": {
@@ -250,22 +245,25 @@
 									"raw": "{\n    \"id\":\"{{username}}\",\n    \"password\":\"{{password}}\"\n}"
 								},
 								"url": {
-									"raw": "{{signin_url}}/v1/login",
+									"raw": "{{signin_url}}/api/v1/login",
 									"host": [
 										"{{signin_url}}"
 									],
 									"path": [
+										"api",
 										"v1",
 										"login"
 									]
 								},
-								"description": "This request will generate a bearer token with a specified time to live value that can be enhanced in the body at your convinience. It will set global variables for signature, timestamp and environment variables for token and aqua_saas_endpoint."
+								"description": "# 🏢 Username & Password Authentication (Self-Hosted)\n\n**Generate a Bearer Token** for your self-hosted Aqua Console deployment using username and password credentials.\n\n## 📋 How It Works\n\n1. **Credentials**: Uses your Aqua Console account credentials\n   - Username (not email address)\n   - Console password\n\n2. **Authentication**: Connects to your self-hosted Aqua Console\n   - Endpoint: `{signin_url}/v1/login`\n   - Method: POST with JSON body\n   - Direct connection to your deployment\n\n3. **Token Response**: Receives a JWT token with:\n   - Your assigned permissions and roles\n   - Console-specific configuration\n   - Access to your deployment's APIs\n\n## 🔄 Post-Authentication\n\nAfter successful authentication, this request automatically:\n- Extracts the JWT token from response\n- Sets environment variables:\n  - `token`: The bearer token for API calls\n  - `aqua_url_v1`: `{signin_url}/api/v1`\n  - `aqua_url_v2`: `{signin_url}/api/v2`\n\n## 📝 Required Environment Variables\n\n- `signin_url`: Your Aqua Console URL (e.g., `https://console.company.com`)\n- `username`: Your Aqua Console username (not email)\n- `password`: Your Aqua Console password\n\n## 💡 Self-Hosted Notes\n\n- **Direct Connection**: Authenticates directly with your console\n- **No Regional Endpoints**: Uses your specific console URL\n- **Local Permissions**: Token inherits your console user permissions\n- **Version**: Uses v1 login endpoint (standard for self-hosted)"
 							},
 							"response": []
 						}
-					]
+					],
+					"description": "# 🏢 Self-Hosted Authentication\n\n**Aqua Self-Hosted** deployments use username and password authentication to access the Enterprise API.\n\n## 📋 Authentication Method\n\n### **Username & Password Authentication**\n- **Use Case**: Standard authentication for on-premises Aqua deployments\n- **Security**: JWT-based token authentication\n- **Endpoint**: Uses your self-hosted Aqua Console URL\n- **Token Management**: Automatic environment variable configuration\n\n## ⚙️ Setup Requirements\n\n**Environment Variables**: Configure these variables in your Postman environment:\n\n1. **signin_url**: Your Aqua Console URL (e.g., `https://your-aqua-console.company.com`)\n2. **username**: Your Aqua Console username (not email)\n3. **password**: Your Aqua Console password\n\n## 🔄 Token Management\n\nThe authentication process automatically:\n- Generates a JWT bearer token\n- Sets environment variables (`aqua_url_v1`, `aqua_url_v2`) \n- Configures API base URLs using your console URL\n- Prepares the session for subsequent API calls\n\n## 🌐 Endpoint Structure\n\nAfter authentication, API calls will use:\n- **API v1**: `{signin_url}/api/v1`\n- **API v2**: `{signin_url}/api/v2`"
 				}
-			]
+			],
+			"description": "# 🔐 Aqua Enterprise API Authentication\n\n**Welcome to Aqua's Authentication Hub** – your gateway to secure access to the Aqua Enterprise API ecosystem. This section provides comprehensive authentication methods for both **SaaS** and **Self-Hosted** Aqua deployments.\n\n## 🚀 Quick Start Guide\n\n### **Step 1: Choose Your Deployment Type**\n- **🌐 SaaS Users**: Use the **SaaS** folder for cloud-hosted Aqua instances\n- **🏢 Self-Hosted Users**: Use the **SelfHosted** folder for on-premises deployments\n\n### **Step 2: Select Authentication Method**\n- **API Key + Secret** (SaaS only) - *Recommended for production*\n- **Username + Password** - *Available for both deployment types*\n\n### **Step 3: Configure Environment Variables**\nSet up your Postman environment with the required credentials (detailed in each section)\n\n### **Step 4: Authenticate**\nRun the appropriate authentication request to generate your bearer token\n\n## 🔄 What Happens After Authentication\n\nAll authentication methods automatically:\n\n✅ **Generate JWT Token** - Secure access token for API calls  \n✅ **Parse Token Metadata** - Extract endpoint URLs and permissions  \n✅ **Set Environment Variables** - Configure `aqua_url_v1`, `aqua_url_v2`, and `token`  \n✅ **Prepare API Session** - Ready for immediate use with other API endpoints  \n\n## 🎯 Choosing the Right Method\n\n| Method | Best For | Security Level | Setup Complexity |\n|--------|----------|----------------|------------------|\n| **API Key & Secret** | Production, Automation | 🔒🔒🔒 Highest | Medium |\n| **Username & Password (SaaS)** | Development, Testing | 🔒🔒 High | Low |\n| **Username & Password (Self-Hosted)** | On-premises Access | 🔒🔒 High | Low |\n\n## 🌍 Regional Support\n\n**SaaS users** benefit from global endpoint support with automatic region detection and URL configuration based on your token metadata.\n\n## 💡 Pro Tips\n\n- **Environment Setup**: Create separate Postman environments for dev/staging/prod\n- **Token Management**: Tokens are automatically refreshed - no manual intervention needed\n- **Security**: API Key method provides granular permissions control\n- **Testing**: Start with username/password for quick testing, then migrate to API keys for production\n\n---\n\n**Ready to get started?** Choose your deployment type below and follow the detailed setup instructions."
 		},
 		{
 			"name": "Access Management",
